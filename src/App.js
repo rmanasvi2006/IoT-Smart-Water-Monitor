@@ -51,6 +51,24 @@ function App() {
         const status = parseInt(latest.field4);
 
         setWaterLevel(level);
+        if (previousLevel !== null) {
+  
+  // Sudden drop detection
+  if (previousLevel - level > 20) {
+    setAlertMessage("⚠️ Rapid Water Drop Detected");
+  }
+
+  // Sudden increase detection
+  else if (level - previousLevel > 20) {
+    setAlertMessage("✅ Tank Refill Detected");
+  }
+
+  else {
+    setAlertMessage("✅ System Operating Normally");
+  }
+}
+
+setPreviousLevel(level);
         setDistance(dist);
         setWifi(wifiSignal);
 
