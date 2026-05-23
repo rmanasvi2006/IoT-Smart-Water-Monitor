@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import {
   LineChart,
@@ -13,11 +12,15 @@ import {
 function App() {
   const [waterLevel, setWaterLevel] = useState(0);
   const [distance, setDistance] = useState(0);
-  const [wifi, setWifi] = useState(0);
-  const [tankStatus, setTankStatus] = useState("LOADING");
+  const [temperature, setTemperature] = useState(0);
+  const [humidity, setHumidity] = useState(0);
+
   const [chartData, setChartData] = useState([]);
   const [lastUpdated, setLastUpdated] = useState("");
-  const [alertMessage, setAlertMessage] = useState("Monitoring water levels normally");
+
+  const [alertMessage, setAlertMessage] = useState(
+    "Monitoring water storage conditions normally"
+  );
 
   const CHANNEL_ID = "3371439";
   const READ_API_KEY = "WLKPSEKY9SO4DFMG";
@@ -47,43 +50,23 @@ function App() {
 
         const level = parseFloat(latest.field2);
         const dist = parseFloat(latest.field1);
-        const wifiSignal = parseFloat(latest.field3);
-        const status = parseInt(latest.field4);
+        const temp = parseFloat(latest.field3);
+        const hum = parseFloat(latest.field4);
 
         setWaterLevel(level);
-        if (previousLevel !== null) {
-  
-  // Sudden drop detection
-  if (previousLevel - level > 20) {
-    setAlertMessage("⚠️ Rapid Water Drop Detected");
-  }
-
-  // Sudden increase detection
-  else if (level - previousLevel > 20) {
-    setAlertMessage("✅ Tank Refill Detected");
-  }
-
-  else {
-    setAlertMessage("✅ System Operating Normally");
-  }
-}
-
-setPreviousLevel(level);
         setDistance(dist);
-        setWifi(wifiSignal);
+        setTemperature(temp);
+        setHumidity(hum);
 
         setLastUpdated(
           new Date(latest.created_at).toLocaleTimeString()
         );
 
-        if (status === 1) {
-          setTankStatus("LOW");
+        if (level < 30) {
           setAlertMessage("⚠️ Low water level detected");
-        } else if (status === 2) {
-          setTankStatus("MEDIUM");
+        } else if (level < 70) {
           setAlertMessage("🟡 Water level stable");
-        } else if (status === 3) {
-          setTankStatus("FULL");
+        } else {
           setAlertMessage("✅ Tank filled successfully");
         }
 
@@ -99,29 +82,12 @@ setPreviousLevel(level);
     }
   };
 
-  const getStatusColor = () => {
-    if (tankStatus === "LOW") return "#ff4d4d";
-    if (tankStatus === "MEDIUM") return "#ffaa00";
-    return "#00cc66";
-  };
-
-  const getStatusBackground = () => {
-    if (tankStatus === "LOW") return "#ffe5e5";
-    if (tankStatus === "MEDIUM") return "#fff3d9";
-    return "#e5fff1";
-  };
-
-  const getWifiText = () => {
-    if (wifi > -60) return "Excellent";
-    if (wifi > -75) return "Good";
-    return "Weak";
-  };
-
   return (
     <div
       style={{
         minHeight: "100vh",
-        background: "#eef2f7",
+        background:
+          "linear-gradient(135deg, #eef2f7, #dfe9f3)",
         padding: "30px",
         fontFamily: "Arial",
       }}
@@ -132,6 +98,8 @@ setPreviousLevel(level);
           justifyContent: "space-between",
           alignItems: "center",
           marginBottom: "10px",
+          flexWrap: "wrap",
+          gap: "20px",
         }}
       >
         <div>
@@ -139,29 +107,47 @@ setPreviousLevel(level);
             style={{
               color: "#16375b",
               marginBottom: "5px",
+              fontSize: "42px",
             }}
           >
             Smart Water Level Monitoring Dashboard
           </h1>
 
-          <p style={{ color: "#666" }}>
-            IoT-based real-time smart water monitoring and analytics system
+          <p
+            style={{
+              color: "#666",
+              fontSize: "18px",
+            }}
+          >
+            IoT-based real-time smart water monitoring
+            and analytics system
           </p>
         </div>
 
         <div
           style={{
             background: "white",
-            padding: "15px 20px",
-            borderRadius: "12px",
-            boxShadow: "0 4px 10px rgba(0,0,0,0.08)",
+            padding: "15px 25px",
+            borderRadius: "15px",
+            boxShadow: "0 6px 15px rgba(0,0,0,0.1)",
           }}
         >
-          <h3 style={{ color: "green", margin: 0 }}>
+          <h3
+            style={{
+              color: "green",
+              margin: 0,
+              fontSize: "24px",
+            }}
+          >
             🟢 System Online
           </h3>
 
-          <p style={{ marginTop: "5px", color: "#666" }}>
+          <p
+            style={{
+              marginTop: "5px",
+              color: "#666",
+            }}
+          >
             Last Updated: {lastUpdated}
           </p>
         </div>
@@ -170,92 +156,106 @@ setPreviousLevel(level);
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+          gridTemplateColumns:
+            "repeat(auto-fit, minmax(220px, 1fr))",
           gap: "20px",
           marginTop: "30px",
           marginBottom: "25px",
         }}
       >
         <Card
-          title="Water Level"
+          title="💧 Water Level"
           value={`${waterLevel.toFixed(1)} %`}
           color="#0077ff"
           bg="#eaf3ff"
         />
 
         <Card
-          title="Distance"
+          title="📏 Distance"
           value={`${distance.toFixed(1)} cm`}
           color="#8e44ad"
           bg="#f3eaff"
         />
 
         <Card
-          title="Connection Status"
-          value={getWifiText()}
-          small={`(${wifi} dBm)`}
-          color="#009688"
-          bg="#e6fffb"
+          title="🌡️ Temperature"
+          value={`${temperature.toFixed(1)} °C`}
+          color="#ff7043"
+          bg="#fff0eb"
         />
 
         <Card
-          title="Tank Status"
-          value={tankStatus}
-          color={getStatusColor()}
-          bg={getStatusBackground()}
+          title="☁️ Humidity"
+          value={`${humidity.toFixed(1)} %`}
+          color="#009688"
+          bg="#e6fffb"
         />
       </div>
 
-    <div
-  style={{
-    background: "white",
-    borderRadius: "15px",
-    padding: "20px",
-    marginBottom: "25px",
-    boxShadow: "0 4px 10px rgba(0,0,0,0.08)",
-  }}
->
-  <h2 style={{ color: "#16375b" }}>
-    Project Objective
-  </h2>
+      <div
+        style={{
+          background: "white",
+          borderRadius: "18px",
+          padding: "25px",
+          marginBottom: "25px",
+          boxShadow: "0 6px 15px rgba(0,0,0,0.08)",
+        }}
+      >
+        <h2
+          style={{
+            color: "#16375b",
+            fontSize: "32px",
+          }}
+        >
+          📌 Project Objective
+        </h2>
 
-  <p
-    style={{
-      color: "#555",
-      fontSize: "17px",
-      lineHeight: "1.7",
-      marginTop: "10px",
-    }}
-  >
-    This system continuously monitors water storage levels
-    using ultrasonic sensing and cloud analytics to detect
-    low-water conditions, monitor usage trends, and improve
-    smart water infrastructure management using a low-cost
-    IoT solution.
-  </p>
-</div>
+        <p
+          style={{
+            color: "#555",
+            fontSize: "18px",
+            lineHeight: "1.8",
+            marginTop: "10px",
+          }}
+        >
+          This system continuously monitors water
+          storage levels using ultrasonic sensing and
+          cloud analytics to detect low-water
+          conditions, analyze usage trends, and
+          improve smart water infrastructure
+          management using a low-cost IoT solution.
+        </p>
+      </div>
 
-<div
-  style={{
-    background: "white",
-    borderRadius: "15px",
-    padding: "20px",
-    marginBottom: "25px",
-    boxShadow: "0 4px 10px rgba(0,0,0,0.08)",
-  }}
->
-  <h2 style={{ color: "#16375b" }}>⚠️ Smart Alerts</h2>
+      <div
+        style={{
+          background: "white",
+          borderRadius: "18px",
+          padding: "25px",
+          marginBottom: "25px",
+          boxShadow: "0 6px 15px rgba(0,0,0,0.08)",
+        }}
+      >
+        <h2
+          style={{
+            color: "#16375b",
+            fontSize: "32px",
+          }}
+        >
+          ⚠️ Smart Alerts
+        </h2>
 
-  <p
-    style={{
-      fontSize: "18px",
-      color: "#444",
-      marginTop: "10px",
-    }}
-  >
-    {alertMessage}
-  </p>
-</div>  
+        <p
+          style={{
+            fontSize: "22px",
+            color: "#444",
+            marginTop: "15px",
+            fontWeight: "500",
+          }}
+        >
+          {alertMessage}
+        </p>
+      </div>
 
       <div
         style={{
@@ -267,21 +267,27 @@ setPreviousLevel(level);
         <div
           style={{
             background: "white",
-            borderRadius: "15px",
-            padding: "20px",
-            boxShadow: "0 4px 10px rgba(0,0,0,0.08)",
+            borderRadius: "18px",
+            padding: "25px",
+            boxShadow: "0 6px 15px rgba(0,0,0,0.08)",
           }}
         >
-          <h2 style={{ color: "#16375b", marginBottom: "20px" }}>
-            Tank Visualization
+          <h2
+            style={{
+              color: "#16375b",
+              marginBottom: "20px",
+              fontSize: "32px",
+            }}
+          >
+            🚰 Tank Visualization
           </h2>
 
           <div
             style={{
-              width: "150px",
-              height: "300px",
+              width: "170px",
+              height: "320px",
               border: "6px solid #16375b",
-              borderRadius: "20px",
+              borderRadius: "25px",
               margin: "40px auto",
               overflow: "hidden",
               position: "relative",
@@ -310,6 +316,7 @@ setPreviousLevel(level);
               textAlign: "center",
               marginTop: "20px",
               color: "#16375b",
+              fontSize: "48px",
             }}
           >
             {waterLevel.toFixed(1)}%
@@ -319,16 +326,22 @@ setPreviousLevel(level);
         <div
           style={{
             background: "white",
-            borderRadius: "15px",
-            padding: "20px",
-            boxShadow: "0 4px 10px rgba(0,0,0,0.08)",
+            borderRadius: "18px",
+            padding: "25px",
+            boxShadow: "0 6px 15px rgba(0,0,0,0.08)",
           }}
         >
-          <h2 style={{ color: "#16375b", marginBottom: "20px" }}>
-            Water Usage Pattern Over Time
+          <h2
+            style={{
+              color: "#16375b",
+              marginBottom: "20px",
+              fontSize: "32px",
+            }}
+          >
+            📈 Real-Time Water Level Analytics
           </h2>
 
-          <ResponsiveContainer width="100%" height={350}>
+          <ResponsiveContainer width="100%" height={400}>
             <LineChart data={chartData}>
               <CartesianGrid strokeDasharray="3 3" />
 
@@ -342,37 +355,69 @@ setPreviousLevel(level);
                 type="natural"
                 dataKey="level"
                 stroke="#0077ff"
-                strokeWidth={3}
+                strokeWidth={4}
+                dot={{ r: 5 }}
               />
             </LineChart>
           </ResponsiveContainer>
         </div>
       </div>
+
+      <p
+        style={{
+          textAlign: "center",
+          color: "#666",
+          marginTop: "40px",
+          fontSize: "17px",
+        }}
+      >
+        Developed using ESP32, HC-SR04, DHT11 and
+        ThingSpeak Cloud
+      </p>
     </div>
   );
 }
 
-function Card({ title, value, color, bg, small }) {
+function Card({ title, value, color, bg }) {
   return (
     <div
       style={{
         background: bg,
-        borderRadius: "15px",
-        padding: "25px",
-        boxShadow: "0 4px 10px rgba(0,0,0,0.08)",
+        borderRadius: "18px",
+        padding: "28px",
+        boxShadow: "0 6px 15px rgba(0,0,0,0.08)",
         textAlign: "center",
+        transition: "0.3s",
+        cursor: "pointer",
       }}
+      onMouseEnter={(e) =>
+        (e.currentTarget.style.transform =
+          "translateY(-5px)")
+      }
+      onMouseLeave={(e) =>
+        (e.currentTarget.style.transform =
+          "translateY(0px)")
+      }
     >
-      <h3 style={{ color: "#555" }}>{title}</h3>
+      <h3
+        style={{
+          color: "#555",
+          fontSize: "24px",
+        }}
+      >
+        {title}
+      </h3>
 
-      <h1 style={{ color: color }}>{value}</h1>
-
-      {small && <p style={{ color: "#666" }}>{small}</p>}
-      
+      <h1
+        style={{
+          color: color,
+          fontSize: "46px",
+        }}
+      >
+        {value}
+      </h1>
     </div>
   );
 }
 
 export default App;
-
-
