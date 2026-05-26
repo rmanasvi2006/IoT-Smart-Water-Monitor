@@ -66,6 +66,11 @@ The monitoring node was deployed near a water sump/storage system for real time 
 
 The deployment setup successfully demonstrated real time monitoring, cloud analytics, and environmental sensing in a practical outdoor environment.
 
+<img width="960" height="1280" alt="WhatsApp Image 2026-05-25 at 5 11 16 PM" src="https://github.com/user-attachments/assets/25c7c459-d0b3-45ba-bed5-e2fb58b05414" />
+
+<img width="1280" height="960" alt="image" src="https://github.com/user-attachments/assets/293e2cba-d732-4e23-bef1-7736ed1d8a60" />
+
+
 ---
 
 ## Results
