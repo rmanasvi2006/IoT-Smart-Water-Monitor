@@ -113,6 +113,10 @@ The project demonstrated the effectiveness of low cost IoT systems for smart inf
 
 
 ---
+## Demo Video
+https://drive.google.com/file/d/1rXn5gqXP-81satueHFpCGgwLyKPSxJMN/view?usp=sharing
+
+---
 
 ## Live Dashboard
 
