@@ -1,70 +1,112 @@
-# Getting Started with Create React App
+# Smart Water Level Monitoring and Environmental Analytics System Using IoT
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+An IoT-based smart monitoring system developed using ESP32, HC-SR04 Ultrasonic Sensor, DHT11 Sensor, ThingSpeak Cloud, and a custom React Dashboard for real-time water-level and environmental monitoring.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## Project Overview
 
-### `npm start`
+This project was developed to monitor water storage conditions in real time using low-cost IoT technology. The system continuously collects water-level, temperature, and humidity data and visualizes the collected information through cloud analytics and a live dashboard interface.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+The deployed monitoring node was tested near a real water sump/storage system to observe refill activity, water-consumption patterns, and environmental conditions in real time.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## Features
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Real-time water-level monitoring
+- Distance measurement using ultrasonic sensing
+- Temperature and humidity monitoring
+- ThingSpeak cloud integration
+- Live React dashboard visualization
+- Smart alerts for low-water conditions
+- Tank visualization interface
+- Graphical trend analytics
+- Remote monitoring capability
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Technologies Used
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- ESP32 Development Board
+- HC-SR04 Ultrasonic Sensor
+- DHT11 Sensor
+- ThingSpeak Cloud Platform
+- React.js
+- JavaScript
+- HTML/CSS
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## System Workflow
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+1. HC-SR04 sensor measures the distance between the sensor and water surface.
+2. ESP32 processes sensor readings and converts them into water-level percentage values.
+3. DHT11 sensor collects temperature and humidity readings.
+4. Sensor data is uploaded to ThingSpeak cloud using WiFi connectivity.
+5. The React dashboard fetches and visualizes the collected data in real time.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Dashboard Features
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- Water-level percentage display
+- Distance measurement display
+- Temperature and humidity monitoring
+- Smart alert system
+- Real-time analytics graph
+- Tank-level visualization
+- Cloud-based monitoring
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Deployment
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+The monitoring node was deployed near a water sump/storage system for real-time testing and monitoring. The ESP32 and sensors were enclosed inside a protective box structure and powered using a portable power bank.
 
-### Code Splitting
+The deployment setup successfully demonstrated real-time monitoring, cloud analytics, and environmental sensing in a practical outdoor environment.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
 
-### Analyzing the Bundle Size
+## Results
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+The system successfully monitored:
+- Water-level conditions
+- Temperature and humidity
+- Refill activity
+- Water-consumption patterns
+- Real-time cloud analytics
 
-### Making a Progressive Web App
+The project demonstrated the effectiveness of low-cost IoT systems for smart infrastructure monitoring applications.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+---
 
-### Advanced Configuration
+## Future Improvements
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+- Automatic motor control
+- Predictive analytics for water management
+- Long-term monitoring analytics
 
-### Deployment
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## Project Screenshots
 
-### `npm run build` fails to minify
+_Add deployment images, ThingSpeak screenshots, and dashboard screenshots here._
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
+
+## Video Demonstration
+
+Add your demo video link here.
+
+---
+
+## Live Dashboard
+
+Add your deployed Vercel dashboard link here.
+
+---
+
+## License
+
+This project was developed for academic and learning purposes.
