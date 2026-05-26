@@ -116,7 +116,7 @@ The project demonstrated the effectiveness of low cost IoT systems for smart inf
 
 ## Live Dashboard
 
-iot-smart-water-monitor.vercel.app
+https://iot-smart-water-monitor.vercel.app/
 
 ---
 
